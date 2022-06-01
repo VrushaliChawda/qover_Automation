@@ -59,15 +59,6 @@ public class QuotePage extends Base{
         PageFactory.initElements(driver, this);
     }
 
-    public void verifyPolicyPageLoaded()
-    {
-        driver.findElement(By.xpath("//div[@data-tid='general.policyholder']/span")).getText().equalsIgnoreCase("Policyholder");
-    }
-    public void languageSelectorDropDown(String lang)
-    {
-        Select dropdown = new Select(languageSelector);
-        dropdown.selectByVisibleText(lang);
-    }
     public WebElement getBikePriceInputBox(){
         return bikePriceInputBox;
     }

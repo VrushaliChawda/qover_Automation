@@ -22,7 +22,7 @@ Feature: Generate bike insurance quote
     | Racing bike | 2390   | Equipped with GPS tracker |
 
     Then User clicked on see price
-    Then Quote is generated with correct price
+    And Quote is generated with correct price
     | Theft | Omnium |
     | €123.17/year | €151.44/year |
     | €10.27/month | €12.62/month |
