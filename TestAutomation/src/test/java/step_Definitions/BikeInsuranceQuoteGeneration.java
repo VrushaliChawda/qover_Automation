@@ -1,19 +1,17 @@
 package step_Definitions;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.QuotePage;
 import resources.Base;
-
 import java.io.IOException;
+import java.util.List;
 
 public class BikeInsuranceQuoteGeneration extends Base {
     private QuotePage bikeInsuranceQuotePage;
@@ -41,16 +39,24 @@ public class BikeInsuranceQuoteGeneration extends Base {
     }
 
     @Given("User adds bike details")
-    public void userAddsBikeDetails() {
-        bikeInsuranceQuotePage.selectBikeType("Racing bike");
-        bikeInsuranceQuotePage.getBikePriceInputBox().sendKeys("2390");
-        bikeInsuranceQuotePage.selectGPSTracker("Equipped with GPS tracker");
+    public void userAddsBikeDetails(DataTable bikeDetails) {
+        List<List<String>> bikeDetailsTable = bikeDetails.asLists();
+        bikeInsuranceQuotePage.selectBikeType(bikeDetailsTable.get(1).get(0));
+        bikeInsuranceQuotePage.getBikePriceInputBox().sendKeys(bikeDetailsTable.get(1).get(1));
+        bikeInsuranceQuotePage.selectGPSTracker(bikeDetailsTable.get(1).get(2));
     }
 
     @Then("Quote is generated with correct price")
-    public void quoteGenerated() {
-        bikeInsuranceQuotePage.verifyTheiftAssistanceQuotePrice("€123.17/year");
-        bikeInsuranceQuotePage.verifyOmniumQuotePrice("€151.44/year");
+    public void quoteGenerated(DataTable price) {
+        List<List<String>> priceObj = price.asLists();
+        bikeInsuranceQuotePage.verifyTheiftAssistanceQuotePriceYearly(priceObj.get(1).get(0));
+        bikeInsuranceQuotePage.verifyTheiftAssistanceQuotePriceMonthly(priceObj.get(2).get(0));
+        bikeInsuranceQuotePage.verifyOmniumQuotePriceYearly(priceObj.get(1).get(1));
+        bikeInsuranceQuotePage.verifyOmniumQuotePriceMonthly(priceObj.get(2).get(1));
+    }
+    @When("User clicked on see price")
+    public void userClickedOnSeePrice() {
+        bikeInsuranceQuotePage.clickSeePrice();
     }
 
     @After
@@ -59,20 +65,4 @@ public class BikeInsuranceQuoteGeneration extends Base {
         driver.quit();
     }
 
-
-    @When("User clicked on see price")
-    public void userClickedOnSeePrice() {
-        bikeInsuranceQuotePage.clickSeePrice();
-    }
-
-    @Then("Error message displayed for {string}")
-    public void errorMessageIsDisplayedIsError(String Error) {
-        bikeInsuranceQuotePage.verifyErrorMessage(Error);
-    }
-
-    @And("User can choose plan")
-    public void userCanChoosePlan() {
-        bikeInsuranceQuotePage.clickChoosePlan("Omium");
-        bikeInsuranceQuotePage.verifyPolicyPageLoaded();
-    }
 }

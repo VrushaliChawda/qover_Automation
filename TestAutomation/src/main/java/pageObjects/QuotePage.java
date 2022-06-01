@@ -11,40 +11,46 @@ import resources.Base;
 
 public class QuotePage extends Base{
 
-    @FindBy(xpath = "//select[@data-test='language.selector']")
+    @FindBy(css = "select[data-test='language.selector']")
     private  WebElement languageSelector;
 
     @FindBy(css = "input[data-test='bike.quote.originalValue']")
     private WebElement bikePriceInputBox;
 
-    @FindBy(xpath = "//div[@data-test='error.minValue']/span")
+    @FindBy(css = "div[data-test='error.minValue'] > span")
     private WebElement minValueError;
 
     @FindBy(xpath ="//input[@data-test='bike.quote.originalValue']/../../../div[@data-test='error.required']/span")
     private WebElement bikePriceRequiredError;
 
-    @FindBy(xpath = "//div[@data-test='error.maxValue']/span")
+    @FindBy(css = "div[data-test='error.maxValue'] > span")
     private WebElement maxValueError;
 
     @FindBy(xpath ="//select[@data-test='bike.quote.type']/../../div[@data-test='error.required']/span")
     private WebElement bikeTypeRequiredError;
 
-    @FindBy(xpath = "//select[@data-test='bike.quote.type']")
+    @FindBy(css = "select[data-test='bike.quote.type']")
     private WebElement bikeTypeDropdown;
 
-    @FindBy(xpath = "//select[@data-test='bike.quote.antiTheftMeasure']")
+    @FindBy(css = "select[data-test='bike.quote.antiTheftMeasure']")
     private WebElement getGPSTrackerDropdown;
 
-    @FindBy(xpath = "//button[@data-test='bike.quote.priceInfoButton']")
+    @FindBy(css = "button[data-test='bike.quote.priceInfoButton']")
     private WebElement seePriceButton;
 
     @FindBy(xpath = "//*[@data-test='bike.quote.card.VARIANT_THEFT_ASSISTANCE']/../preceding-sibling::div/div[@class='sc-dx5tdu-0 hJZLib']")
-    private WebElement theiftAssistanceQuotePrice;
+    private WebElement theiftAssistanceQuotePriceYearly;
+
+    @FindBy(xpath = "//*[@data-test='bike.quote.card.VARIANT_THEFT_ASSISTANCE']/../preceding-sibling::div/div[@class='sc-dx5tdu-0 hJZLib xsmall']")
+    private WebElement theiftAssistanceQuotePriceMonthly;
 
     @FindBy(xpath = "//*[@data-test='bike.quote.card.VARIANT_THEFT_DAMAGE_ASSISTANCE']/../preceding-sibling::div/div[@class='sc-dx5tdu-0 hJZLib']")
-    private WebElement omniumQuotePrice;
+    private WebElement omniumQuotePriceYearly;
 
-    @FindBy(xpath = "//button[@data-test='bike.quote.card.VARIANT_THEFT_DAMAGE_ASSISTANCE']")
+    @FindBy(xpath = "//*[@data-test='bike.quote.card.VARIANT_THEFT_DAMAGE_ASSISTANCE']/../preceding-sibling::div/div[@class='sc-dx5tdu-0 hJZLib xsmall']")
+    private WebElement omniumQuotePriceMonthly;
+
+    @FindBy(css = "button[data-test='bike.quote.card.VARIANT_THEFT_DAMAGE_ASSISTANCE']")
     private WebElement chooseOmiumPlan;
 
 
@@ -56,18 +62,6 @@ public class QuotePage extends Base{
     public void verifyPolicyPageLoaded()
     {
         driver.findElement(By.xpath("//div[@data-tid='general.policyholder']/span")).getText().equalsIgnoreCase("Policyholder");
-    }
-    public void clickChoosePlan(String plan)
-    {
-        switch (plan) {
-            case "Theift":
-
-                break;
-            case"Omium":
-                chooseOmiumPlan.click();
-                break;
-        }
-
     }
     public void languageSelectorDropDown(String lang)
     {
@@ -108,15 +102,24 @@ public class QuotePage extends Base{
         seePriceButton.click();
     }
 
-    public void verifyTheiftAssistanceQuotePrice(String expPrice){
-        String actualPrice=theiftAssistanceQuotePrice.getText();
-        Assert.assertEquals(actualPrice,expPrice, "Theift Assistance Price displayed incorrectly");
-
+    public void verifyTheiftAssistanceQuotePriceYearly(String expPrice){
+        String actualPrice=theiftAssistanceQuotePriceYearly.getText();
+        Assert.assertEquals(actualPrice,expPrice, "Theift Assistance quote price yearly displayed incorrectly");
     }
 
-    public void verifyOmniumQuotePrice(String expPrice){
-        String actualPrice=omniumQuotePrice.getText();
-        Assert.assertEquals(actualPrice,expPrice, "Omnium Price displayed incorrectly");
-
+    public void verifyTheiftAssistanceQuotePriceMonthly(String expPrice){
+        String actualPrice=theiftAssistanceQuotePriceMonthly.getText();
+        Assert.assertEquals(actualPrice,expPrice, "Theift Assistance quote price monthly displayed incorrectly");
     }
+
+    public void verifyOmniumQuotePriceYearly(String expPrice){
+        String actualPrice=omniumQuotePriceYearly.getText();
+        Assert.assertEquals(actualPrice,expPrice, "Omnium Quote Price yearly displayed incorrectly");
+    }
+
+    public void verifyOmniumQuotePriceMonthly(String expPrice){
+        String actualPrice=omniumQuotePriceMonthly.getText();
+        Assert.assertEquals(actualPrice,expPrice, "Omnium Quote Price monthly displayed incorrectly");
+    }
+
 }

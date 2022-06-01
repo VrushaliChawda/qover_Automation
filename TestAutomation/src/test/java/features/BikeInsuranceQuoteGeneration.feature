@@ -18,6 +18,11 @@ Feature: Generate bike insurance quote
 
   Scenario: Generating Quote with valid price
     When User adds bike details
+    | BikeType | BikePrice | GPS Tracker |
+    | Racing bike | 2390   | Equipped with GPS tracker |
+
     Then User clicked on see price
     Then Quote is generated with correct price
-
+    | Theft | Omnium |
+    | €123.17/year | €151.44/year |
+    | €10.27/month | €12.62/month |
